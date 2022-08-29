@@ -1,0 +1,26 @@
+<% layout('layouts/boilerplate') %>
+
+<h1>All Workouts</h1>
+    <div>
+        <a href="/workouts/new">Add Workout</a>
+    </div>
+  
+        <% for (let workout of workouts) { %>
+            <div class="card" mb-3>
+                <div class="row">
+                    <div class="col-md-4">
+                        <img class="img-fluid" alt="" src="<%= workout.image %> ">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title"><%= workout.gym  %></h5>
+                            <p class="card-text"><%= workout.description %></p>
+                            <p class="card-text">
+                                <small class="text-muted"><%= workout.address %></small>
+                            </p>
+                            <a class="btn btn-primary" href="/workouts/<%= workout._id %> ">View <%= workout.gym %> </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } %>

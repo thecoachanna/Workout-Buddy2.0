@@ -1,0 +1,28 @@
+<% layout('layouts/boilerplate') %>
+
+<div class="row">
+    <h1 class="text-center">Create Workout</h1>
+    <div class="col-6 offset-3">
+        <form action="/workouts" method="POST">
+            <div class="mb-3">
+                <label class="form-label" for="gym">Gym</label>
+                <input class="form-control" type="text" id="gym" name="workout[gym]">
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="address">Address</label>
+                <input class="form-control" type="text" id="address" name="workout[address]">
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="image">Image URL</label>
+                <input class="form-control" type="text" id="image" name="workout[image]">
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="description">Description</label>
+                <textarea class="form-control" type="text" id="description" name="workout[description]"></textarea>
+            </div>
+            <div class="mb-3">
+            <button class="btn btn-success">Add Workout</button>
+        </div>
+        </form> 
+    </div>
+</div>
