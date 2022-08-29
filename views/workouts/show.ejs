@@ -1,27 +1,57 @@
 <% layout('layouts/boilerplate') %>
 
-<div class="row">
-    <div class="col-6 offset-3">
-        <div class="card mb-3" style="width: 18rem;">
-            <img src="<%= workout.image %> " class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title"><%= workout.gym %></h5>
-              <p class="card-text"><%= workout.description  %></p>
+    <div class="row">
+        <div class="col-6">
+            <div class="card mb-3" style="width: 18rem;">
+                <img src="<%= workout.image %> " class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%= workout.gym %>
+                    </h5>
+                    <p class="card-text">
+                        <%= workout.description %>
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-muted">
+                        <%= workout.address %>
+                    </li>
+                    <li class="list-group-item">A second item</li>
+                    <li class="list-group-item">A third item</li>
+                </ul>
+                <div class="card-body">
+                    <a href="/workouts/<%= workout._id%>/edit" class="card-link btn btn-info">Edit</a>
+                    <form class="d-inline" action="/workouts/<%= workout._id%>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+                <div class="card-footer text-muted">
+                    2 days ago
+                </div>
             </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item text-muted"><%= workout.address  %></li>
-              <li class="list-group-item">A second item</li>
-              <li class="list-group-item">A third item</li>
-            </ul>
-            <div class="card-body">
-              <a href="/workouts/<%= workout._id%>/edit" class="card-link btn btn-info">Edit</a>
-              <form class="d-inline" action="/workouts/<%= workout._id%>?_method=DELETE" method="POST">
-                <button class="btn btn-danger">Delete</button>
-                </form>
-            </div>
-            <div class="card-footer text-muted">
-                2 days ago
-            </div>
-          </div>
+            
+        </div>
+        <div class="col-6">
+            <h4>Leave a Comment</h4>
+            <form action="/workouts/<%= workout._id %>/comments" method="POST" class="mb-3 validated-form" novalidate>
+                <div class="mb-3">
+                    
+                    <label class="form-label" for="body"></label>
+                    <textarea class="form-control" name="comment[body]" id="body" cols="30" rows="3"
+                        required></textarea>
+                </div>
+                <button class="btn btn-success">Submit</button>
+            </form>
+            <% for(let comment of workout.comments) { %>
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">Username</h5>
+                        <p class="card-text">Comment: <%= comment.body %></p>
+                        <form action="/workouts/<%= workout._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST"">
+                        <button class="btn btn-sm btn-danger"></button>
+                    </form>
+                    </div>
+                </div>
+                <% } %>
+        </div>
     </div>
-</div>

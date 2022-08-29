@@ -3,22 +3,22 @@
     <div class="row">
         <h1 class="text-center">Edit Workout</h1>
         <div class="col-6 offset-3">
-            <form action="/workouts/<%= workout._id %>?_method=PUT" method="POST">
+            <form action="/workouts/<%= workout._id %>?_method=PUT" method="POST" novalidate class="validated-form">
                 <div class="mb-3">
                     <label class="form-label" for="gym">Gym</label>
-                    <input class="form-control" type="text" id="gym" name="workout[gym]" value="<%= workout.gym %>">
+                    <input class="form-control" type="text" id="gym" name="workout[gym]" value="<%= workout.gym %>" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="address">Address</label>
-                    <input class="form-control" type="text" id="address" name="workout[address]" value="<%= workout.address %>">
+                    <input class="form-control" type="text" id="address" name="workout[address]" value="<%= workout.address %>" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="image">Image URL</label>
-                    <input class="form-control" type="text" id="image" name="workout[image]" value="<%= workout.image %>">
+                    <input class="form-control" type="text" id="image" name="workout[image]" value="<%= workout.image %>" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="description">Description</label>
-                    <textarea class="form-control" type="text" id="description" name="workout[description]"><%= workout.description %></textarea>
+                    <textarea class="form-control" type="text" id="description" name="workout[description]" required><%= workout.description %></textarea>
                 </div>
                 <div class="mb-3">
                 <button class="btn btn-info">Update Workout</button>

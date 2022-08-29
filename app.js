@@ -5,6 +5,7 @@ const path = require('path')
 const ejsMate = require('ejs-mate')
 const methodOverride = require('method-override');
 const Workout = require('./models/workout')
+const Comment = require('./models/comment')
 
 mongoose.connect('mongodb://localhost:27017/workout-buddy2', {
     useNewUrlParser: true,
@@ -42,14 +43,16 @@ app.get('/workouts/new', (req, res) => {
     res.render('workouts/new')
 })
 
-app.post('/workouts', async (req, res) => {    
-    const workout = new Workout(req.body.workout)
-    await workout.save()
-    res.redirect(`/workouts/${workout._id}`)
+app.post('/workouts', async (req, res) => {   
+   
+        const workout = new Workout(req.body.workout)
+        await workout.save()
+        res.redirect(`/workouts/${workout._id}`)
+  
 })
 
 app.get('/workouts/:id', async (req, res) => {
-    const workout = await Workout.findById(req.params.id)
+    const workout = await Workout.findById(req.params.id).populate('comments')
     res.render('workouts/show', { workout })
 })
 
@@ -68,6 +71,29 @@ app.delete('/workouts/:id', async (req, res) => {
     const { id } = req.params
     await Workout.findByIdAndDelete(id)
     res.redirect('/workouts')
+})
+
+app.delete('/workouts/:id/comments/:commentId', async (req, res) => {
+    // mongo operator pull
+    const {id, commentId} = req.params
+    await Workout.findByIdAndUpdate(id, { $pull: {comments: commentId} })
+    await Comment.findByIdAndDelete(commentId)
+    res.redirect(`/workouts/${id}`)
+})
+
+// creating comments
+app.post('/workouts/:id/comments', async (req, res) => {
+    const workout = await Workout.findById(req.params.id)
+    const comment = new Comment(req.body.comment)
+    workout.comments.push(comment)
+    await comment.save()
+    await workout.save()
+    res.redirect(`/workouts/${workout._id}`)
+})
+
+// Error handling
+app.use((err, req, res, next) => {
+    res.send('Something went wrong.')
 })
 
 app.listen(3000, () => {
