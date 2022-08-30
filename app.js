@@ -4,8 +4,9 @@ const app = express()
 const path = require('path')
 const ejsMate = require('ejs-mate')
 const methodOverride = require('method-override');
-const Workout = require('./models/workout')
-const Comment = require('./models/comment')
+
+const workouts = require('./routes/workouts')
+const comments = require('./routes/comments')
 
 mongoose.connect('mongodb://localhost:27017/workout-buddy2', {
     useNewUrlParser: true,
@@ -29,66 +30,12 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
 
+app.use('/workouts', workouts)
+app.use('/workouts/:id/comments', comments)
+
 // Attaching routes
 app.get('/', (req, res) => {
     res.render('Home')
-})
-
-app.get('/workouts', async (req, res) => {
-    const workouts = await Workout.find({});
-    res.render('workouts/index', { workouts })
-})
-
-app.get('/workouts/new', (req, res) => {    
-    res.render('workouts/new')
-})
-
-app.post('/workouts', async (req, res) => {   
-   
-        const workout = new Workout(req.body.workout)
-        await workout.save()
-        res.redirect(`/workouts/${workout._id}`)
-  
-})
-
-app.get('/workouts/:id', async (req, res) => {
-    const workout = await Workout.findById(req.params.id).populate('comments')
-    res.render('workouts/show', { workout })
-})
-
-app.get('/workouts/:id/edit', async (req, res) => {
-    const workout = await Workout.findById(req.params.id)
-    res.render('workouts/edit', { workout })
-})
-
-app.put('/workouts/:id', async (req, res) => {
-    const { id } = req.params
-    const workout = await Workout.findByIdAndUpdate(id, {...req.body.workout})
-    res.redirect(`/workouts/${workout._id}`)
-})
-
-app.delete('/workouts/:id', async (req, res) => {
-    const { id } = req.params
-    await Workout.findByIdAndDelete(id)
-    res.redirect('/workouts')
-})
-
-app.delete('/workouts/:id/comments/:commentId', async (req, res) => {
-    // mongo operator pull
-    const {id, commentId} = req.params
-    await Workout.findByIdAndUpdate(id, { $pull: {comments: commentId} })
-    await Comment.findByIdAndDelete(commentId)
-    res.redirect(`/workouts/${id}`)
-})
-
-// creating comments
-app.post('/workouts/:id/comments', async (req, res) => {
-    const workout = await Workout.findById(req.params.id)
-    const comment = new Comment(req.body.comment)
-    workout.comments.push(comment)
-    await comment.save()
-    await workout.save()
-    res.redirect(`/workouts/${workout._id}`)
 })
 
 // Error handling
