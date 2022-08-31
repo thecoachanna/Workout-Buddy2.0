@@ -8,9 +8,18 @@
         <div class="navbar-nav">
           <a class="nav-link" href="/">Home</a>
           <a class="nav-link" href="/workouts">Workouts</a>
-          <a class="nav-link" href="/workouts/new">Add Workout</a>
-          
+          <a class="nav-link" href="/workouts/new">Add Workout</a>          
         </div>
+        
+        <div class="navbar-nav ml-auto">
+          <% if(!currentUser) { %> 
+          <a class="nav-link" href="/login">Login</a>
+          <a class="nav-link" href="/register">Sign-up</a>
+          <% } else { %> 
+          <a class="nav-link" href="/logout">Logout</a>
+          <% } %> 
+        </div>
+        
       </div>
     </div>
   </nav>

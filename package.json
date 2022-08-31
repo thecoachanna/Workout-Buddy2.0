@@ -18,10 +18,15 @@
   },
   "homepage": "https://github.com/thecoachanna/Workout-Buddy2.0#readme",
   "dependencies": {
+    "connect-flash": "^0.1.1",
     "ejs": "^3.1.8",
     "ejs-mate": "^4.0.0",
     "express": "^4.18.1",
+    "express-session": "^1.17.3",
     "method-override": "^3.0.0",
-    "mongoose": "^6.5.3"
+    "mongoose": "^6.5.3",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
+    "passport-local-mongoose": "^7.1.2"
   }
 }
