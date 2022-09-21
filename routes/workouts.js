@@ -1,44 +1,27 @@
 const express = require('express');
 const router = express.Router();
+const workouts = require('../controllers/workouts')
 const { isLoggedIn } = require('../middleware')
 
-const Workout = require('../models/workout')
+// INDEX
+router.get('/', workouts.index)
 
-router.get('/', async (req, res) => {
-    const workouts = await Workout.find({});
-    res.render('workouts/index', { workouts })
-})
+// NEW
+router.get('/new', isLoggedIn, workouts.renderNewForm)
 
-router.get('/new', isLoggedIn, (req, res) => {   
-    res.render('workouts/new')
-})
+// CREATE
+router.post('/', isLoggedIn, workouts.createWorkout)
 
-router.post('/', isLoggedIn, async (req, res) => { 
-        const workout = new Workout(req.body.workout)
-        await workout.save()
-        res.redirect(`/workouts/${workout._id}`)  
-})
+// SHOW
+router.get('/:id', workouts.showWorkout)
 
-router.get('/:id', async (req, res) => {
-    const workout = await Workout.findById(req.params.id).populate('comments')
-    res.render('workouts/show', { workout })
-})
+// EDIT
+router.get('/:id/edit', isLoggedIn, workouts.renderEditForm)
 
-router.get('/:id/edit', isLoggedIn, async (req, res) => {
-    const workout = await Workout.findById(req.params.id)
-    res.render('workouts/edit', { workout })
-})
+// UPDATE
+router.put('/:id', isLoggedIn, workouts.updateWorkout)
 
-router.put('/:id', isLoggedIn, async (req, res) => {
-    const { id } = req.params
-    const workout = await Workout.findByIdAndUpdate(id, {...req.body.workout})
-    res.redirect(`/workouts/${workout._id}`)
-})
-
-router.delete('/:id', isLoggedIn, async (req, res) => {
-    const { id } = req.params
-    await Workout.findByIdAndDelete(id)
-    res.redirect('/workouts')
-})
+// DELETE
+router.delete('/:id', isLoggedIn, workouts.deleteWorkout)
 
 module.exports = router;

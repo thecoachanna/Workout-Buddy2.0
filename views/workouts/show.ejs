@@ -2,40 +2,46 @@
 
     <div class="row">
         <div class="col-6">
+            <div id="map" style="width: 400px; height: 300px;"></div>
             <div class="card mb-3" style="width: 18rem;">
                 <img src="<%= workout.image %> " class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">
-                        <%= workout.gym %>
+                        <%= workout.workout %>
                     </h5>
                     <p class="card-text">
                         <%= workout.description %>
                     </p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item text-muted">
-                        <%= workout.address %>
+                    <li class="list-group-item"><%= workout.gym %></li>
+                    <li class="list-group-item">Address: <%= workout.address %></li>
+                    <li class="list-group-item">Date: <%= workout.date %></li>
+                    <li class="list-group-item">Time: <%= workout.time %></li>
+                    
+                    <li class="list-group-item text-muted">Created by: <%= workout.author.username %>
                     </li>
-                    <li class="list-group-item">A second item</li>
-                    <li class="list-group-item">A third item</li>
+
                 </ul>
-                <div class="card-body">
-                    <a href="/workouts/<%= workout._id%>/edit" class="card-link btn btn-info">Edit</a>
-                    <form class="d-inline" action="/workouts/<%= workout._id%>?_method=DELETE" method="POST">
-                        <button class="btn btn-danger">Delete</button>
-                    </form>
-                </div>
-                <div class="card-footer text-muted">
-                    2 days ago
-                </div>
+                <% if(currentUser && workout.author===currentUser._id) {%>
+                    <div class="card-body">
+                        <a href="/workouts/<%= workout._id%>/edit" class="card-link btn btn-info">Edit</a>
+                        <form class="d-inline" action="/workouts/<%= workout._id%>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                    <% } %>
+                        <div class="card-footer text-muted">
+                            2 days ago
+                        </div>
             </div>
-            
+
         </div>
         <div class="col-6">
             <h4>Leave a Comment</h4>
             <form action="/workouts/<%= workout._id %>/comments" method="POST" class="mb-3 validated-form" novalidate>
                 <div class="mb-3">
-                    
+
                     <label class="form-label" for="body"></label>
                     <textarea class="form-control" name="comment[body]" id="body" cols="30" rows="3"
                         required></textarea>
@@ -46,12 +52,31 @@
                 <div class="card mb-3">
                     <div class="card-body">
                         <h5 class="card-title">Username</h5>
-                        <p class="card-text">Comment: <%= comment.body %></p>
-                        <form action="/workouts/<%= workout._id %>/comments/<%= comment._id %>?_method=DELETE" method="POST"">
-                        <button class="btn btn-danger"></button>
-                    </form>
+                        <p class="card-text">Comment: <%= comment.body %>
+                        </p>
+                        <form action="/workouts/<%= workout._id %>/comments/<%= comment._id %>?_method=DELETE"
+                            method="POST"">
+                        <button class=" btn btn-danger"></button>
+                        </form>
                     </div>
                 </div>
                 <% } %>
         </div>
     </div>
+
+    <script>
+
+        const workout = '<%- JSON.stringify(workout) %>';
+
+        mapboxgl.accessToken = '<%-process.env.MAPBOX_TOKEN%>';
+        const map = new mapboxgl.Map({
+            container: 'map', // container ID
+            style: 'mapbox://styles/mapbox/streets-v11', // style URL
+            center: workout.geometry.coordinates, // starting position [lng, lat]
+            zoom: 7 // starting zoom
+        })
+
+        const marker1 = new mapboxgl.Marker()
+            .setLngLat(workout.geometry.coordinates)
+            .addTo(map);
+    </script>

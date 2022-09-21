@@ -1,37 +1,22 @@
 const express = require('express')
 const router = express.Router()
-const User = require('../models/user')
 const passport = require('passport')
+const User = require('../models/user')
+const users = require('../controllers/users')
 
-router.get('/register', (req, res) => {
-    res.render('users/register')
-})
+// GET Register
+router.get('/register', users.renderRegister)
 
-router.post('/register', async (req, res, next) => {
-    const { email, username, password } = req.body
-    const user = new User({ email, username })
-    const registeredUser = await User.register(user, password)
-    req.login(registeredUser, err => {
-        if (err) return next(err)
-        res.redirect('/workouts')
-    })
-})
+// POST Register
+router.post('/register', users.register)
 
-router.get('/login', (req, res) => {
-    res.render('users/login')
-})
+// GET Login
+router.get('/login', users.renderLogin)
 
-router.post('/login', passport.authenticate('local',
-    { failureFlash: true, failureRedirect: '/login' }), (req, res) => {
-    res.redirect('/workouts')
-})
+// POST Login
+router.post('/login', passport.authenticate('local'), users.login)
 
-
-router.get('/logout', function(req, res, next) {
-    req.logout(function(err) {
-      if (err) { return next(err); }
-      res.redirect('/login');
-    });
-  })
+// GET Logout
+router.get('/logout', users.logout)
 
 module.exports = router

@@ -1,3 +1,7 @@
+if (process.env.NODE_ENV !== "production") {
+    require('dotenv').config();
+}
+
 const express = require('express')
 const mongoose = require('mongoose')
 const app = express()
@@ -16,9 +20,7 @@ const commentRoutes = require('./routes/comments')
 
 mongoose.connect('mongodb://localhost:27017/workout-buddy2', {
     useNewUrlParser: true,
-    // useCreateIndex: true,
     useUnifiedTopology: true,
-    // useFindAndModify: false,
 })
 
 const db = mongoose.connection;
@@ -69,7 +71,7 @@ app.use('/workouts/:id/comments', commentRoutes)
 
 // Attaching routes
 app.get('/', (req, res) => {
-    res.redirect('/register')
+    res.render('home')
 })
 
 // Error handling

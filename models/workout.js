@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const Comment = require('./comment')
 
 const WorkoutSchema = new Schema({
   workout: {
@@ -9,6 +10,17 @@ const WorkoutSchema = new Schema({
     type: String,
     // required: true,
   },
+  geometry: {
+    type: {
+        type: String,
+        enum: ['Point'],
+        required: true
+    },
+    coordinates: {
+        type: [Number],
+        required: true
+    }
+},
   address: {
     type: String,
     // required: true,
@@ -29,6 +41,12 @@ const WorkoutSchema = new Schema({
     type: String,
     // required: true,
   },
+  author: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    }
+  ],
   comments: [
     {
       type: Schema.Types.ObjectId,
