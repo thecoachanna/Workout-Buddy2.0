@@ -34,8 +34,16 @@ module.exports.createWorkout = async (req, res) => {
 
 // SHOW Workout
 module.exports.showWorkout = async (req, res) => {
-    const workout = await Workout.findById(req.params.id).populate('comments').populate('author')
-    res.render('workouts/show', { workout })
+    const workout = await Workout.findById(req.params.id).populate('comments'
+    //     {
+    //     path: 'comments',
+    //     populate: {
+    //         path: 'author'
+    //     }
+    // }
+    ).populate('author')
+    console.log(workout)
+    res.render('workouts/show', { workout, currentUser: req.user || {} })
 }
 
 // EDIT Workout

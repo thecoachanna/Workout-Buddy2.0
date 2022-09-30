@@ -17,7 +17,10 @@ router.get('/login', users.renderLogin)
 router.post('/login', passport.authenticate('local'), users.login)
 
 // GET Profile
-// router.get('/:username', users.profile)
+router.get('/profile/:id', users.profile)
+
+// UPDATE - Add events to Profile
+router.put('/profile/:id', users.addWorkoutToProfile)
 
 // GET Logout
 router.get('/logout', users.logout)

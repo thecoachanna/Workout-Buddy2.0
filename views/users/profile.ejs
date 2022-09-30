@@ -15,6 +15,15 @@
         </tr>
       </thead>
       <tbody>
- 
+        <% user.upcomingWorkouts.forEach(workout => { %>
+
+         
+          <tr>
+            <td scope="row"><%= workout.workout %> </th>
+            <td><%= workout.date %> </td>
+            <td><%= workout.time %> </td>
+            
+          </tr>
+          <% }) %>
       </tbody>
     </table>

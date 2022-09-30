@@ -36,13 +36,23 @@ module.exports.logout = function(req, res, next) {
   }
 
 // GET Profile
-// module.exports.profile = (req, res) => {
-//     User.findById(req.params.id, (err, user) => {
-//       if (err) {
-//         res.status(400).json(err);
-//         // JSON converts error to a language I can understand
-//         return;
-//       }
-//       res.render("users/profile", { user });
-//     });
-//   };
+module.exports.profile = (req, res) => {
+    User.findById(req.params.id).populate('upcomingWorkouts')
+    .then(user => {
+        res.render("users/profile", { user, currentUser: req.user });
+    })
+    .catch(res.status(400).json)
+    
+  };
+
+  module.exports.addWorkoutToProfile = (req, res) => {
+    User.findOneAndUpdate({_id: req.user._id}, {$push:{upcomingWorkouts:req.body.workoutId}}, { new: true },
+        (err, user) => {
+          if (err) {
+            res.status(400).json(err);
+            return;
+          }
+          res.redirect(`/profile/${ req.user._id}`)
+        }
+      );
+  }

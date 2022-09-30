@@ -20,12 +20,24 @@
                     <li class="list-group-item">Date: <%= workout.date %></li>
                     <li class="list-group-item">Time: <%= workout.time %></li>
                     
-                    <li class="list-group-item text-muted">Created by: <%= workout.author.username %>
-                    </li>
+                    <li class="list-group-item text-muted">Created by: <%= workout.author[0].username %>
+                    </li>                 
+<li>
+    <div class="card-body text-center">
+        <form
+          action="/profile/<%= currentUser._id %>?_method=PUT"
+          method="POST"
+        >
+          <button type="submit" class="btn btn-secondary">Buddy up!</button>
+          <input type="hidden" name="workoutId" value="<%= workout._id %>" />
+        </form>
+      </div>
+   
+</li>
 
                 </ul>
                 
-                <% if(currentUser && workout.author === currentUser._id) {%>
+                <% if(currentUser && workout.author[0]._id === currentUser._id) {%>
                     <div class="card-body">
                         <a href="/workouts/<%= workout._id%>/edit" class="card-link btn btn-info">Edit</a>
                         <form class="d-inline" action="/workouts/<%= workout._id%>?_method=DELETE" method="POST">
@@ -57,7 +69,7 @@
             <% for(let comment of workout.comments) { %>
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">: <%= workout.author %></h5>
+                        <h5 class="card-title">Username: <%= workout.author[0].username %></h5>
                         <p class="card-text"><%= comment.body %>
                         </p>
                         <form action="/workouts/<%= workout._id %>/comments/<%= comment._id %>?_method=DELETE"
