@@ -74,7 +74,7 @@ const workouts = [
         address: 'Austin, Tx',
         date: 'October 28',
         time: '8:00 am',
-        description: 'This is a 2 hour beginner class to kettlebell movement. Cost is $40 and would to have a buddy join!',
+        description: 'This is a 2 hour beginner class to kettlebell movement. Cost is $40 and would love to have a buddy join!',
         image: 'https://images.unsplash.com/photo-1597075933405-a06cb4d6cecb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTc3fHx3b3Jrb3V0fGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60',
         author: 'Shawn',
         comments: "This sounds dope! I've always wanted to learn kettlebells.",

@@ -1,10 +1,11 @@
 <% layout('layouts/boilerplate') %>
+<link rel="stylesheet" href="/stylesheets/app.css">
 
     <div class="row">
         <div class="col-6">
-            <div id="map" style="width: 400px; height: 300px;"></div>
-            <div class="card mb-3" style="width: 18rem;">
-                <img src="<%= workout.image %> " class="card-img-top" alt="...">
+            
+            <div class="card mb-3" >
+                <img src="<%= workout.image %>" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">
                         <%= workout.workout %>
@@ -23,7 +24,8 @@
                     </li>
 
                 </ul>
-                <% if(currentUser && workout.author===currentUser._id) {%>
+                
+                <% if(currentUser && workout.author === currentUser._id) {%>
                     <div class="card-body">
                         <a href="/workouts/<%= workout._id%>/edit" class="card-link btn btn-info">Edit</a>
                         <form class="d-inline" action="/workouts/<%= workout._id%>?_method=DELETE" method="POST">
@@ -31,32 +33,36 @@
                         </form>
                     </div>
                     <% } %>
-                        <div class="card-footer text-muted">
-                            2 days ago
-                        </div>
+                      
             </div>
 
         </div>
         <div class="col-6">
-            <h4>Leave a Comment</h4>
+        <div id="map"></div>
+
+        
+            <h5>Start a chat here:</h5>
             <form action="/workouts/<%= workout._id %>/comments" method="POST" class="mb-3 validated-form" novalidate>
                 <div class="mb-3">
-
                     <label class="form-label" for="body"></label>
                     <textarea class="form-control" name="comment[body]" id="body" cols="30" rows="3"
                         required></textarea>
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
                 </div>
                 <button class="btn btn-success">Submit</button>
+
             </form>
             <% for(let comment of workout.comments) { %>
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">Username</h5>
-                        <p class="card-text">Comment: <%= comment.body %>
+                        <h5 class="card-title">: <%= workout.author %></h5>
+                        <p class="card-text"><%= comment.body %>
                         </p>
                         <form action="/workouts/<%= workout._id %>/comments/<%= comment._id %>?_method=DELETE"
                             method="POST"">
-                        <button class=" btn btn-danger"></button>
+                        <button class="btn btn-small btn-danger">Delete</button>
                         </form>
                     </div>
                 </div>
@@ -66,7 +72,7 @@
 
     <script>
 
-        const workout = '<%- JSON.stringify(workout) %>';
+        const workout = <%- JSON.stringify(workout) %>;
 
         mapboxgl.accessToken = '<%-process.env.MAPBOX_TOKEN%>';
         const map = new mapboxgl.Map({
@@ -75,8 +81,15 @@
             center: workout.geometry.coordinates, // starting position [lng, lat]
             zoom: 7 // starting zoom
         })
-
+        map.addControl(new mapboxgl.NavigationControl());
         const marker1 = new mapboxgl.Marker()
             .setLngLat(workout.geometry.coordinates)
+            .setPopup(
+                new mapboxgl.Popup({ offset: 25 })
+                .setHTML(
+                    `<h4>${workout.workout}</h4><p>${workout.gym}</p>`
+                )
+            )
+            
             .addTo(map);
     </script>

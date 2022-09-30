@@ -10,7 +10,11 @@ module.exports.index = async (req, res) => {
 }
 
 // NEW Workout
-module.exports.renderNewForm = (req, res) => {   
+module.exports.renderNewForm = (req, res) => {  
+    if (!req.isAuthenticated()) {
+        alert("You must be signed in.");
+        return res.redirect('/login')
+    }
     res.render('workouts/new')
 }
 
@@ -24,6 +28,7 @@ module.exports.createWorkout = async (req, res) => {
     workout.geometry = geoData.body.features[0].geometry;
     workout.author = req.user._id
     await workout.save()
+    console.log(workout)
     res.redirect(`/workouts/${workout._id}`)  
 }
 

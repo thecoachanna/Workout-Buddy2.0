@@ -1,12 +1,13 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand" href="/workouts">WorkoutBuddy</a>
+      <a class="navbar-brand" href="/">WorkoutBuddy</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           <a class="nav-link" href="/">Home</a>
+          <a class="nav-link" href="/profile">Profile</a>
           <a class="nav-link" href="/workouts">Workouts</a>
           <a class="nav-link" href="/workouts/new">Add Workout</a>          
         </div>
@@ -15,6 +16,7 @@
           <% if(!currentUser) { %> 
           <a class="nav-link" href="/login">Login</a>
           <a class="nav-link" href="/register">Sign-up</a>
+          
           <% } else { %> 
           <a class="nav-link" href="/logout">Logout</a>
           <% } %> 

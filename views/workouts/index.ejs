@@ -1,10 +1,7 @@
 <% layout('layouts/boilerplate') %>
 
-<h1>All Workouts</h1>
-    <div>
-        <a href="/workouts/new">Add Workout</a>
-    </div>
-  
+<h1>Buddy up!</h1>
+     
         <% for (let workout of workouts) { %>
             <div class="card mb-3 shadow" >
                 <div class="row">
@@ -21,9 +18,12 @@
                             <p class="card-text">
                                 <small class="text-muted"><%= workout.address %></small>
                             </p>
-                            <a class="btn btn-primary" href="/workouts/<%= workout._id %> ">View <%= workout.gym %> </a>
+                            <a class="btn btn-primary" href="/workouts/<%= workout._id %> ">Details</a>
                         </div>
                     </div>
                 </div>
             </div>
             <% } %>
+
+  
+

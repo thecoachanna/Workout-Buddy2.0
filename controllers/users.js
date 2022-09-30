@@ -27,10 +27,22 @@ module.exports.login = (req, res) => {
     res.redirect('/workouts')
 }
 
-// GET
+// GET Logout
 module.exports.logout = function(req, res, next) {
     req.logout(function(err) {
       if (err) { return next(err); }
       res.redirect('/login');
     });
   }
+
+// GET Profile
+// module.exports.profile = (req, res) => {
+//     User.findById(req.params.id, (err, user) => {
+//       if (err) {
+//         res.status(400).json(err);
+//         // JSON converts error to a language I can understand
+//         return;
+//       }
+//       res.render("users/profile", { user });
+//     });
+//   };

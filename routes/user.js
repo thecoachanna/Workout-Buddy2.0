@@ -16,6 +16,9 @@ router.get('/login', users.renderLogin)
 // POST Login
 router.post('/login', passport.authenticate('local'), users.login)
 
+// GET Profile
+// router.get('/:username', users.profile)
+
 // GET Logout
 router.get('/logout', users.logout)
 
