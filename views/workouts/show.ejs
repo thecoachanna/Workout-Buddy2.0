@@ -1,10 +1,10 @@
 <% layout('layouts/boilerplate') %>
-<link rel="stylesheet" href="/stylesheets/app.css">
+    <link rel="stylesheet" href="/stylesheets/app.css">
 
     <div class="row">
         <div class="col-6">
-            
-            <div class="card mb-3" >
+
+            <div class="card mb-3">
                 <img src="<%= workout.image %>" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">
@@ -15,66 +15,65 @@
                     </p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><%= workout.gym %></li>
-                    <li class="list-group-item">Address: <%= workout.address %></li>
-                    <li class="list-group-item">Date: <%= workout.date %></li>
-                    <li class="list-group-item">Time: <%= workout.time %></li>
-                    
-                    <li class="list-group-item text-muted">Created by: <%= workout.author[0].username %>
-                    </li>                 
-<li>
-    <div class="card-body text-center">
-        <form
-          action="/profile/<%= currentUser._id %>?_method=PUT"
-          method="POST"
-        >
-          <button type="submit" class="btn btn-secondary">Buddy up!</button>
-          <input type="hidden" name="workoutId" value="<%= workout._id %>" />
-        </form>
-      </div>
-   
-</li>
+                    <li class="list-group-item">
+                        <%= workout.gym %>
+                    </li>
+                    <li class="list-group-item">Address: <%= workout.address %>
+                    </li>
+                    <li class="list-group-item">Date: <%= workout.date %>
+                    </li>
+                    <li class="list-group-item">Time: <%= workout.time %>
+                    </li>
 
+                    <li class="list-group-item text-muted">Created by: <%= workout.author[0].username %>
+                    </li>
+                    <li class="list-group-item text-center">
+                        <form action="/profile/<%= currentUser._id %>?_method=PUT" method="POST">
+                            <button type="submit" class="btn btn-secondary">Buddy up!</button>
+                            <input type="hidden" name="workoutId" value="<%= workout._id %>" />
+                        </form>
+                    </li>
                 </ul>
-                
-                <% if(currentUser && workout.author[0]._id === currentUser._id) {%>
+
+                <% if(currentUser && workout.author[0]._id===currentUser._id) {%>
                     <div class="card-body">
-                        <a href="/workouts/<%= workout._id%>/edit" class="card-link btn btn-info">Edit</a>
+                        <a href="/workouts/<%= workout._id%>/edit" class="card-link btn btn-secondary">Edit</a>
                         <form class="d-inline" action="/workouts/<%= workout._id%>?_method=DELETE" method="POST">
                             <button class="btn btn-danger">Delete</button>
                         </form>
                     </div>
                     <% } %>
-                      
+
             </div>
 
         </div>
         <div class="col-6">
-        <div id="map"></div>
+            <div id="map" class="mb-3"></div>
 
-        
+
             <h5>Start a chat here:</h5>
             <form action="/workouts/<%= workout._id %>/comments" method="POST" class="mb-3 validated-form" novalidate>
                 <div class="mb-3">
                     <label class="form-label" for="body"></label>
                     <textarea class="form-control" name="comment[body]" id="body" cols="30" rows="3"
                         required></textarea>
-                        <div class="valid-feedback">
-                            Looks good!
-                        </div>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
                 </div>
-                <button class="btn btn-success">Submit</button>
-
+                <button class="btn btn-secondary">Submit</button>
             </form>
+
             <% for(let comment of workout.comments) { %>
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h5 class="card-title">Username: <%= workout.author[0].username %></h5>
-                        <p class="card-text"><%= comment.body %>
+                        <h5 class="card-title">User <%= workout.author[0].username %>: </h5>
+                        <p class="card-text">
+                            <%= comment.body %>
                         </p>
                         <form action="/workouts/<%= workout._id %>/comments/<%= comment._id %>?_method=DELETE"
                             method="POST"">
-                        <button class="btn btn-small btn-danger">Delete</button>
+                        <button class=" btn btn-small btn-danger">Delete</button>
                         </form>
                     </div>
                 </div>
@@ -84,7 +83,7 @@
 
     <script>
 
-        const workout = <%- JSON.stringify(workout) %>;
+        const workout = <%-JSON.stringify(workout)%>;
 
         mapboxgl.accessToken = '<%-process.env.MAPBOX_TOKEN%>';
         const map = new mapboxgl.Map({
@@ -98,10 +97,10 @@
             .setLngLat(workout.geometry.coordinates)
             .setPopup(
                 new mapboxgl.Popup({ offset: 25 })
-                .setHTML(
-                    `<h4>${workout.workout}</h4><p>${workout.gym}</p>`
-                )
+                    .setHTML(
+                        `<h4>${workout.workout}</h4><p>${workout.gym}</p>`
+                    )
             )
-            
+
             .addTo(map);
     </script>

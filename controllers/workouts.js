@@ -6,7 +6,7 @@ const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 // INDEX Workouts
 module.exports.index = async (req, res) => {
     const workouts = await Workout.find({});
-    res.render('workouts/index', { workouts })
+    res.render('workouts/index', { workouts, currentUser: req.user || {} })
 }
 
 // NEW Workout
@@ -15,7 +15,7 @@ module.exports.renderNewForm = (req, res) => {
         alert("You must be signed in.");
         return res.redirect('/login')
     }
-    res.render('workouts/new')
+    res.render('workouts/new', {currentUser: req.user || {} })
 }
 
 // CREATE Workout
@@ -29,7 +29,7 @@ module.exports.createWorkout = async (req, res) => {
     workout.author = req.user._id
     await workout.save()
     console.log(workout)
-    res.redirect(`/workouts/${workout._id}`)  
+    res.redirect(`/workouts/${workout._id}`, { currentUser: req.user || {} })  
 }
 
 // SHOW Workout
@@ -49,7 +49,7 @@ module.exports.showWorkout = async (req, res) => {
 // EDIT Workout
 module.exports.renderEditForm = async (req, res) => {
     const workout = await Workout.findById(req.params.id)
-    res.render('workouts/edit', { workout })
+    res.render('workouts/edit', { workout, currentUser: req.user || {} })
 }
 
 // UPDATE Workout

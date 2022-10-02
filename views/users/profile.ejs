@@ -1,7 +1,9 @@
 <% layout('layouts/boilerplate')%>
 
-<h1 class="text-center"></h1>
-       
+
+<div class="header p-3 pb-md-4 mx-auto text-center">
+  <h3 class="display-5 fw-normal">Upcoming Workouts</h3>
+</div>
  
  
     <table class="table table-striped text-center">
@@ -11,7 +13,6 @@
           <th scope="col">Date</th>
           <th scope="col">Time</th>
           <th scope="col">Connect</th>
-          <th scope="col">Cancel</th>
         </tr>
       </thead>
       <tbody>
@@ -22,6 +23,7 @@
             <td scope="row"><%= workout.workout %> </th>
             <td><%= workout.date %> </td>
             <td><%= workout.time %> </td>
+            <td><a href="/workouts/<%= workout._id%>" class="btn btn-sm btn-secondary">Buddy Chat</a></td>
             
           </tr>
           <% }) %>
