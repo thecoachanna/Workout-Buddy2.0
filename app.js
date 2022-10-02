@@ -80,11 +80,9 @@ app.get('/', (req, res) => {
     res.render('home')
 })
 
-// Error handling
-// app.use((err, req, res, next) => {
-//     res.send('Something went wrong.')
-// })
 
-app.listen(3000, () => {
-    console.log('Serving on Port 3000.')
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
+    console.log(`Serving on port:${port}`)
 })
