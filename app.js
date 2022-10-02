@@ -9,16 +9,18 @@ const path = require('path')
 const ejsMate = require('ejs-mate')
 const methodOverride = require('method-override');
 const session = require('express-session')
-// const flash = require('connect-flash')
+const MongoStore = require('connect-mongo')
 const passport = require('passport')
 const localStrategy = require('passport-local')
 const User = require('./models/user')
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/workout-buddy2'
 
 const userRoutes = require('./routes/user')
 const workoutRoutes = require('./routes/workouts')
 const commentRoutes = require('./routes/comments')
 
-mongoose.connect('mongodb://localhost:27017/workout-buddy2', {
+
+mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
@@ -38,8 +40,15 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride('_method'))
+
+const secret = process.env.SECRET || 'supersecret'
+
 const sessionConfig = {
-    secret: 'secret',
+    store: MongoStore.create({ mongoUrl: dbUrl }),
+    name: 'session',
+    secret,
+    collection: 'WorkoutBuddy2',
+    touchAfter: 24 * 60 * 60,
     resave: false,
     saveUnititialized: true,
     cookie: {
