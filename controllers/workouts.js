@@ -29,7 +29,7 @@ module.exports.createWorkout = async (req, res) => {
     workout.author = req.user._id
     await workout.save()
     console.log(workout)
-    res.redirect(`/workouts/${workout._id}`, { currentUser: req.user || {} })  
+    res.redirect(`/workouts/${workout._id}`)  
 }
 
 // SHOW Workout
